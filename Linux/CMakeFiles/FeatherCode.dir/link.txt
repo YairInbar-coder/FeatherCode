@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/FeatherCode.dir/link.d CMakeFiles/FeatherCode.dir/src/main.c.o -o FeatherCode  /usr/lib/x86_64-linux-gnu/libSDL3_ttf.so.0.2.2 /usr/lib/x86_64-linux-gnu/libSDL3.so.0.4.2

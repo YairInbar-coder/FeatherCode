@@ -1,3 +1,0 @@
-/mnt/c/Users/User/Documents/Coding/C++/Apps/FeatherCode/build/CMakeFiles/FeatherCode.dir
-/mnt/c/Users/User/Documents/Coding/C++/Apps/FeatherCode/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/User/Documents/Coding/C++/Apps/FeatherCode/build/CMakeFiles/rebuild_cache.dir
