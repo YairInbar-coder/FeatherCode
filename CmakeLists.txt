@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.20)
+
+set(CMAKE_C_COMPILER "clang")
+
+project(FeatherCode LANGUAGES C)
+
+find_package(SDL3 REQUIRED)
+find_package(SDL3_ttf REQUIRED)
+
+set(pn ${PROJECT_NAME})
+
+add_executable(${pn} src/main.c)
+
+target_include_directories(FeatherCode PRIVATE src)
+target_link_libraries(${pn} PRIVATE SDL3::SDL3 SDL3_ttf::SDL3_ttf)
