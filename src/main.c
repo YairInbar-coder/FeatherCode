@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2026 Yair Inbar
 
-#include <Global.h>
+#include <App.h>
 
 int main(int argc, char argv[]) {
 	Start();
