@@ -1,3 +1,27 @@
+/*
+MIT License
+
+Copyright (c) 2026 Yair Inbar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 #pragma once
 #include <SDL3/SDL.h>
 
@@ -8,29 +32,26 @@
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Event event;
-
 bool running = true;
 
-void initApp() {
+// first frame
+void Start() {
 	window = SDL_CreateWindow("FeatherCode", 800, 600, SDL_WINDOW_RESIZABLE);
 	renderer = SDL_CreateRenderer(window, "opengl");	
 }
 
-void updateApp() {
-	while (running) {
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_EVENT_QUIT) {
-				running = false;
-			}
-		}
-
-		SDL_RenderClear(renderer);
-
-		SDL_RenderPresent;
-	}
+// every frame
+void Update() {
+	
 }
 
-void closeApp() {
+// the events every frame
+void Event() {
+
+}
+
+// last frame
+void Finish() {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
