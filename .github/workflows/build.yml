@@ -12,25 +12,55 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     strategy:
-      # Prevent a failure on one OS from stopping the other builds
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    # 1. Downloads your code from the repository into the runner
+    # 1. Download source code from your repository
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # 2. Installs CMake and compilers automatically (built-in on GitHub runners)
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+    # 2. Install core SDL3 and SDL3_ttf extension libraries
+    - name: Install SDL3 & SDL3_ttf Dependencies
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt-get update
+          sudo apt-get install -y libfreetype6-dev libharfbuzz-dev libsdl3-dev
+          
+          # Check if the specific ttf package is in standard apt repos yet; fallback to source if not
+          if ! sudo apt-get install -y libsdl3-ttf-dev 2>/dev/null; then
+            echo "libsdl3-ttf-dev not available via apt. Compiling extension from source..."
+            git clone --depth 1 https://github.com -b main
+            cmake -S SDL_ttf -B SDL_ttf/build -DCMAKE_BUILD_TYPE=Release -DSDLTTF_VENDORED=ON
+            cmake --build SDL_ttf/build
+            sudo cmake --install SDL_ttf/build
+          fi
 
-    # 3. Compiles the project using the generated build files
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew install sdl3 sdl3_ttf
+
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          vcpkg install sdl3:x64-windows sdl3-ttf:x64-windows
+        fi
+      shell: bash
+
+    # 3. Configure CMake with cross-platform optimization flags
+    - name: Configure CMake
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+        else
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+        fi
+      shell: bash
+
+    # 4. Run the compilation step
     - name: Build project
       run: cmake --build ${{github.workspace}}/build --config Release
 
-    # 4. Optional: Runs your tests if you use CTest
+    # 5. Optional: Execute test suites if you use CTest framework
     - name: Run Tests
       working-directory: ${{github.workspace}}/build
       run: ctest -C Release
+
